@@ -55,7 +55,7 @@ var education = {
 		"name" : "Business and Administration",
 		"location" : "Sweden, Kungälv",
 		"degree" : "Bachelor",
-		"majors" : "Economics",
+		"majors": ["Economics"],
 		"dates" : "2006 - 2009",
 		"url" : "http://kungalv.se"
 	},
@@ -63,7 +63,7 @@ var education = {
 		"name" : "Service Manager",
 		"location" : "Sweden, Stockholm",
 		"degree" : "master",
-		"majors" : "Cosumer Service",
+		"majors": ["Costumer Service"],
 		"dates" : "2013",
 		"url" : "http://audi.se"
 	}],
