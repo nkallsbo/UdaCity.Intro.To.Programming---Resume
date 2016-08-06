@@ -64,9 +64,9 @@ The International Name challenge in Lesson 2 where you'll create a function that
 */
 $(document).ready(function() {
   $('button').click(function() {
-    var oldName = $('#name').html() || ''; 
-    var iName = inName(oldName) || function(){}; 
-    $('#name').html(iName);  
+    var oldName = $('#name').html() || '';
+    var iName = inName(oldName) || function(){};
+    $('#name').html(iName);
   });
 });
 
@@ -126,20 +126,24 @@ function initializeMap() {
     var locations = [];
 
     // adds the single location property from bio to the locations array
-    for (var contact in bio.contacts) {
-      locations.push(bio.contacts[contact].location);
+    if (bio.contacts.location != undefined) {
+      locations.push(bio.contacts.location);
     }
 
     // iterates through school locations and appends each location to
     // the locations array
-    for (var school in education.schools) {
-      locations.push(education.schools[school].location);
+    for (var i = 0; i < education.schools.length; i++) {
+      if (education.schools[i].location != undefined) {
+        locations.push(education.schools[i].location);
+      }
     }
 
     // iterates through work locations and appends each location to
     // the locations array
-    for (var job in work.jobs) {
-      locations.push(work.jobs[job].location);
+    for (var i = 0; i < work.jobs.length; i++) {
+      if (work.jobs[i].location != undefined) {
+        locations.push(work.jobs[i].location);
+      }
     }
 
     return locations;

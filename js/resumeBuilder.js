@@ -4,15 +4,16 @@ var bio = {
 	"name" : "Natalie Kallsbo ",
 	"role" : "Student",
 	"welcomeMessage" : "Welcome to my resumé!",
-	"image" : "images/me.jpg",
-	"contacts" : [{
+	"biopic" : "images/me.jpg",
+	"contacts" : {
 		"mobile" : "555-444-333",
 		"skype" : "n.kallsbo",
+		"github" : "n.kallsbo",
 		"location" : "Walnut Creek",
 		"email" : "natalie@kallsbo.se"
-	}],
+	},
 	"skills" : ["Cars, Costumer Service, Audi, Car paint"]
-}
+};
 
 var work = {
 	"jobs" : [
@@ -30,10 +31,11 @@ var work = {
 		"location" : "Gothenburg",
 		"description" : "Checked cars for corrosion and other warranty work."
 	}]
-}
+};
 
 var projects = {
-	"project" : [{
+	"project" : [
+	{
 		"title" : "Converter",
 		"dates" : "2016",
 		"description" : "Build my own converter in C#. Converts american messurment to the metric system.",
@@ -45,15 +47,15 @@ var projects = {
 		"description" : "Helping testing this program for bugs and some design things",
 		"images" : ["images/photzman.jpg"]
 	}]
-}
+};
 
 var education = {
 	"schools" : [
 	{
 		"name" : "Business and Administration",
 		"location" : "Sweden, Kungälv",
-		"degree" : "bachelor",
-		"majors" : "Economics and costumer service",
+		"degree" : "Bachelor",
+		"majors" : "Economics",
 		"dates" : "2006 - 2009",
 		"url" : "http://kungalv.se"
 	},
@@ -65,13 +67,20 @@ var education = {
 		"dates" : "2013",
 		"url" : "http://audi.se"
 	}],
-	"online courses" : [{
+	"onlineCourses" : [
+		{
 		"title" : "Front-End Web Developer Nanodegree",
-		"school" : "udacity",
+		"school" : "Udacity",
 		"dates" : "2016",
-		"url" : "https://www.udacity.com/course/nd001"
+		"url" : "https://www.udacity.com"
+	},
+	{
+		"title" : "Programming 1",
+		"school" : "Hermods",
+		"dates" : "2015",
+		"url" : "http://hermods.se"
 	}]
-}
+};
 
 /**
 * @description Displays my Bio
@@ -86,23 +95,24 @@ var education = {
 bio.display = function() {
 	var formattedName = HTMLheaderName.replace("%data%",bio.name);
 	var formattedRole = HTMLheaderRole.replace("%data%",bio.role);
-	var formattedImage = HTMLbioPic.replace("%data%",bio.image);
+	var formattedImage = HTMLbioPic.replace("%data%",bio.biopic);
 	var formattedMessage = HTMLWelcomeMsg.replace("%data%",bio.welcomeMessage);
 
 	$("#header").prepend(formattedRole).prepend(formattedName).append(formattedImage,formattedMessage);
 	$("#header").append(HTMLskillsStart);
 
-	for(skill in bio.skills) {
-		var formattedSkills = HTMLskills.replace("%data%",bio.skills[skill]);
+	for (var i = 0; i < bio.skills.length; i++) {
+		var formattedSkills = HTMLskills.replace("%data%",bio.skills[i]);
 		$("#skills").append(formattedSkills);
-	};
+	}
 
-	for(contact in bio.contacts) {
-		var formattedMobile = HTMLmobile.replace("%data%",bio.contacts[contact].mobile);
-		var formattedEmail = HTMLemail.replace("%data%",bio.contacts[contact].email);
-		var formattedSkype = HTMLcontactGeneric.replace("%contact%","skype").replace("%data%",bio.contacts[contact].skype);
-		$("#footerContacts").append(formattedMobile,formattedEmail,formattedSkype);
-	};
+
+	var formattedMobile = HTMLmobile.replace("%data%",bio.contacts.mobile);
+	var formattedEmail = HTMLemail.replace("%data%",bio.contacts.email);
+	var formattedSkype = HTMLcontactGeneric.replace("%contact%","skype").replace("%data%",bio.contacts.skype);
+	var formattedHitHub = HTMLcontactGeneric.replace("%contact%","github").replace("%data%",bio.contacts.github);
+	$("#topContacts, #footerContacts").append(formattedMobile,formattedEmail,formattedSkype, formattedHitHub);
+
 };
 
 /**
@@ -115,15 +125,29 @@ bio.display = function() {
 * @param {string} formattedMajor - Replaces to given major
 */
 education.display = function() {
-	for(school in education.schools) {
+	for (var i = 0; i < education.schools.length; i++) {
 		$("#education").append(HTMLschoolStart);
 
-		var formattedName = HTMLschoolName.replace("%data%",education.schools[school].name);
-		var formattedDegree = HTMLschoolDegree.replace("%data%",education.schools[school].degree);
-		var formattedDates = HTMLschoolDates.replace("%data%",education.schools[school].dates);
-		var formattedLocation = HTMLschoolLocation.replace("%data%",education.schools[school].location);
-		var formattedMajor = HTMLschoolMajor.replace("%data%",education.schools[school].majors);
+		var formattedName = HTMLschoolName.replace("%data%",education.schools[i].name);
+		var formattedDegree = HTMLschoolDegree.replace("%data%",education.schools[i].degree);
+		var formattedDates = HTMLschoolDates.replace("%data%",education.schools[i].dates);
+		var formattedLocation = HTMLschoolLocation.replace("%data%",education.schools[i].location);
+		var formattedMajor = HTMLschoolMajor.replace("%data%",education.schools[i].majors);
 		$(".education-entry:last").append(formattedName + formattedDegree,formattedDates,formattedLocation,formattedMajor);
+	}
+
+	if (education.onlineCourses.length > 0) {
+		$("#education").append(HTMLonlineClasses);
+	}
+
+	for (var i = 0; i < education.onlineCourses.length; i++) {
+		$("#education").append(HTMLschoolStart);
+
+		var formattedTitle = HTMLonlineTitle.replace("%data%",education.onlineCourses[i].title);
+		var formattedSchool = HTMLonlineSchool.replace("%data%",education.onlineCourses[i].school);
+		var formattedDates = HTMLonlineDates.replace("%data%",education.onlineCourses[i].dates);
+		var formattedURL = HTMLonlineURL.replace("%data%",education.onlineCourses[i].url);
+		$(".education-entry:last").append(formattedTitle + formattedSchool,formattedDates,formattedURL);
 	}
 };
 
@@ -135,15 +159,16 @@ education.display = function() {
 * @param {string} formattedDescription - Replaces to given descriptions
 */
 work.display = function() {
-	for(job in work.jobs) {
+	for (var i = 0; i < work.jobs.length; i++) {
 		$("#workExperience").append(HTMLworkStart);
 
-		var formattedEmployer = HTMLworkEmployer.replace("%data%",work.jobs[job].employer);
-		var formattedTitle = HTMLworkTitle.replace("%data%",work.jobs[job].title);
-		var formattedDates = HTMLworkDates.replace("%data%",work.jobs[job].dates);
-		var formattedDescription = HTMLworkDescription.replace("%data%",work.jobs[job].description);
+		var formattedEmployer = HTMLworkEmployer.replace("%data%",work.jobs[i].employer);
+		var formattedTitle = HTMLworkTitle.replace("%data%",work.jobs[i].title);
+		var formattedDates = HTMLworkDates.replace("%data%",work.jobs[i].dates);
+		var formattedDescription = HTMLworkDescription.replace("%data%",work.jobs[i].description);
+		var formattedLocation = HTMLworkLocation.replace("%data%",work.jobs[i].location);
 
-		$(".work-entry:last").append(formattedEmployer + formattedTitle,formattedDates,formattedDescription);
+		$(".work-entry:last").append(formattedEmployer + formattedTitle,formattedDates,formattedLocation,formattedDescription);
 	}
 };
 
@@ -155,20 +180,17 @@ work.display = function() {
 * @param {string} formattedDescription - Replaces to given descriptions
 */
 projects.display = function(){
-	for(item in projects.project){
+	for (var i = 0; i < projects.project.length; i++){
 		$("#projects").append(HTMLprojectStart);
-		var formattedTitle = HTMLprojectTitle.replace("%data%",projects.project[item].title);
-		var formattedDates = HTMLprojectDates.replace("%data%",projects.project[item].dates);
-		var formattedDescription = HTMLprojectDescription.replace("%data%",projects.project[item].description);
+		var formattedTitle = HTMLprojectTitle.replace("%data%",projects.project[i].title);
+		var formattedDates = HTMLprojectDates.replace("%data%",projects.project[i].dates);
+		var formattedDescription = HTMLprojectDescription.replace("%data%",projects.project[i].description);
 
 		$(".project-entry:last").append(formattedTitle,formattedDates,formattedDescription);
-		for (image in projects.project[item].images) {
-			var formattedImage = HTMLprojectImage.replace("%data%",projects.project[item].images[image]);
+		for (var j = 0; j < projects.project[i].images.length; j++) {
+			var formattedImage = HTMLprojectImage.replace("%data%",projects.project[i].images[j]);
 			$(".project-entry:last").append(formattedImage);
-		};
-
-
-
+		}
 	}
 };
 
@@ -179,12 +201,11 @@ projects.display = function(){
 * @param {string} newName - Saves my name here
 */
 function inName(name){
-	console.log(name);
 	var newName = name;
 	newName = newName[0].toUpperCase() + newName.slice(1,newName.indexOf(" ") + 1).toLowerCase() + newName.slice(newName.indexOf(" ") + 1).toUpperCase();
 
 	return newName;
-};
+}
 
 // Calls functions to display my info
 work.display();
